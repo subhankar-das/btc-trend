@@ -1,9 +1,9 @@
-import "./App.css";
 import { useState } from "react";
 import { Upload, Button } from "antd";
 import { UploadOutlined, LoadingOutlined } from "@ant-design/icons";
 import Papa from "papaparse";
 import RenderGraph from "./RenderGraph";
+import "./BTCApp.css";
 
 function BTCContainer() {
   // const [uploadedFile, setUploadedFile] = useState({});
