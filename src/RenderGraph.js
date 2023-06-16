@@ -83,16 +83,19 @@ function RenderGraph({ csvData, headers }) {
       // arr[0] => month name
       // arr[1] => an array of values for a particular month
       const sumOfElements = sumOfArrayValues(arr[1]);
-      const avg = sumOfElements === 0 ? 0 : sumOfElements / arr[1].length;
-      monthWiseAvg[arr[0]] = avg.toFixed(2);
+      const avg =
+        sumOfElements === 0 ? 0 : (sumOfElements / arr[1].length).toFixed(2);
+      monthWiseAvg[arr[0]] = parseFloat(avg);
     });
-    // console.log({ monthWiseAvg });
     setYaxisData(Object.values(monthWiseAvg));
     setXaxisData(Object.keys(monthWiseAvg));
     return monthWiseAvg;
   };
 
   const calculateData = () => {
+    // empty existing data points
+    setXaxisData([]);
+    setYaxisData([]);
     if (graphType === "line") {
       // calculate Y
       calculateYAxisForLineChart(csvData, selectColumnValue);
@@ -112,8 +115,6 @@ function RenderGraph({ csvData, headers }) {
   useEffect(() => {
     if (csvData.length > 0) {
       setGraphLoading(true);
-      setYaxisData([]);
-      setXaxisData([]);
       calculateData();
     }
   }, [csvData, graphType, selectColumnValue]);
@@ -131,9 +132,9 @@ function RenderGraph({ csvData, headers }) {
   };
   const optionsForGraph = {
     grid: {
-      left: "3%",
-      right: "3%",
-      bottom: "3%",
+      left: "5%",
+      right: "5%",
+      bottom: "10%",
     },
     tooltip: {
       trigger: "axis",
@@ -156,7 +157,15 @@ function RenderGraph({ csvData, headers }) {
           color: "rgba(180, 180, 180, 0.3)",
         },
         color: "rgba(64, 150, 255, 0.9)",
-        // color: "rgba(19, 31, 30, 0.8)",
+        sampling: "lttb",
+      },
+    ],
+    dataZoom: [
+      {
+        type: "inside", // Enable zooming
+      },
+      {
+        type: "slider", // Enable panning
       },
     ],
   };
@@ -221,6 +230,8 @@ function RenderGraph({ csvData, headers }) {
             option={optionsForGraph}
             loadingOption={loadingOption}
             showLoading={isGraphLoading}
+            lazyUpdate={true}
+            style={{ height: 400 }}
           />
         )}
       </section>
@@ -228,7 +239,7 @@ function RenderGraph({ csvData, headers }) {
   );
 }
 
-export default RenderGraph;
+export default React.memo(RenderGraph);
 
 RenderGraph.propTypes = {
   csvData: PropTypes.array.isRequired,
