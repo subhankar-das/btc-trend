@@ -40,20 +40,14 @@ function RenderGraph({ csvData, headers }) {
 
   // method to calculate Y-axis values for Line Chart
   const calculateYAxisForLineChart = (fullCsvData, colName) => {
-    // iterate through CSV data to find out column value
     const yValues = fullCsvData.map((obj) => parseFloat(obj[colName]));
-    setYaxisData(yValues);
     return yValues;
-    // console.log({ yValues, colName });
   };
 
   // method to calculate X-axis values for Line Chart
   const calculateXAxisForLineChart = (fullCsvData, colName) => {
-    // iterate through CSV data to find out column value
     const xValues = fullCsvData.map((obj) => obj[colName]);
-    setXaxisData(xValues);
     return xValues;
-    // console.log({ xValues, colName });
   };
 
   // method to calculate discrete month wise data
@@ -87,20 +81,20 @@ function RenderGraph({ csvData, headers }) {
         sumOfElements === 0 ? 0 : (sumOfElements / arr[1].length).toFixed(2);
       monthWiseAvg[arr[0]] = parseFloat(avg);
     });
-    setYaxisData(Object.values(monthWiseAvg));
-    setXaxisData(Object.keys(monthWiseAvg));
     return monthWiseAvg;
   };
 
-  const calculateData = () => {
+  const calculatePlotData = () => {
     // empty existing data points
     setXaxisData([]);
     setYaxisData([]);
     if (graphType === "line") {
       // calculate Y
-      calculateYAxisForLineChart(csvData, selectColumnValue);
+      const yVals = calculateYAxisForLineChart(csvData, selectColumnValue);
+      setYaxisData(yVals);
       // calculate X
-      calculateXAxisForLineChart(csvData, "Unix Timestamp");
+      const xVals = calculateXAxisForLineChart(csvData, "Unix Timestamp");
+      setXaxisData(xVals);
     } else if (graphType === "bar") {
       const monthWiseData = calculateDiscreteMonth(
         csvData,
@@ -108,15 +102,18 @@ function RenderGraph({ csvData, headers }) {
         selectColumnValue
       );
       // calculate both axes
-      calculateAxesForBarChart(monthWiseData);
+      const monthWiseAverage = calculateAxesForBarChart(monthWiseData);
+      setYaxisData(Object.values(monthWiseAverage));
+      setXaxisData(Object.keys(monthWiseAverage));
     }
   };
 
   useEffect(() => {
     if (csvData.length > 0) {
       setGraphLoading(true);
-      calculateData();
+      calculatePlotData();
     }
+    // eslint-disable-next-line
   }, [csvData, graphType, selectColumnValue]);
 
   useEffect(() => {
@@ -129,45 +126,6 @@ function RenderGraph({ csvData, headers }) {
 
   const onChangeColumn = (val) => {
     setColumnValue(val);
-  };
-  const optionsForGraph = {
-    grid: {
-      left: "5%",
-      right: "5%",
-      bottom: "10%",
-    },
-    tooltip: {
-      trigger: "axis",
-    },
-    xAxis: {
-      type: "category",
-      data: xAxisData,
-    },
-    yAxis: {
-      type: "value",
-    },
-    series: [
-      {
-        data: yAxisData,
-        type: graphType,
-        animation: true,
-        draggable: true,
-        showBackground: true,
-        backgroundStyle: {
-          color: "rgba(180, 180, 180, 0.3)",
-        },
-        color: "rgba(64, 150, 255, 0.9)",
-        sampling: "lttb",
-      },
-    ],
-    dataZoom: [
-      {
-        type: "inside", // Enable zooming
-      },
-      {
-        type: "slider", // Enable panning
-      },
-    ],
   };
 
   const loadingOption = {
@@ -227,11 +185,49 @@ function RenderGraph({ csvData, headers }) {
           <></>
         ) : (
           <ReactECharts
-            option={optionsForGraph}
+            option={{
+              grid: {
+                left: "5%",
+                right: "5%",
+                bottom: "10%",
+              },
+              tooltip: {
+                trigger: "axis",
+              },
+              xAxis: {
+                type: "category",
+                data: xAxisData,
+              },
+              yAxis: {
+                type: "value",
+              },
+              series: [
+                {
+                  data: yAxisData,
+                  type: graphType,
+                  animation: true,
+                  draggable: true,
+                  showBackground: true,
+                  backgroundStyle: {
+                    color: "rgba(180, 180, 180, 0.3)",
+                  },
+                  color: "rgba(64, 150, 255, 0.9)",
+                  sampling: "lttb",
+                },
+              ],
+              dataZoom: [
+                {
+                  type: "inside", // Enable zooming
+                },
+                {
+                  type: "slider", // Enable panning
+                },
+              ],
+            }}
             loadingOption={loadingOption}
             showLoading={isGraphLoading}
             lazyUpdate={true}
-            style={{ height: 400 }}
+            style={{ height: 450 }}
           />
         )}
       </section>
