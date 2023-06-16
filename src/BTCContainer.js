@@ -22,7 +22,6 @@ function BTCContainer() {
         const headersArray = Object.keys(parseData[0]);
         setCSVData(parseData);
         setHeaders(headersArray);
-        console.log("post parse:", parseData);
       },
     });
   };
