@@ -8,6 +8,7 @@ import RenderGraph from "./RenderGraph";
 function BTCContainer() {
   // const [uploadedFile, setUploadedFile] = useState({});
   const [csvData, setCSVData] = useState([]);
+  const [headers, setHeaders] = useState([]);
   const [isParsingCSVFile, setParsingCSVFile] = useState(false);
 
   const parseCsv = (fileObj) => {
@@ -16,9 +17,12 @@ function BTCContainer() {
       skipEmptyLines: true,
       header: true, //get array of objects
       complete: (results) => {
+        const parseData = results.data;
         setParsingCSVFile(false);
-        setCSVData(results.data);
-        console.log("post parse:", results.data);
+        const headersArray = Object.keys(parseData[0]);
+        setCSVData(parseData);
+        setHeaders(headersArray);
+        console.log("post parse:", parseData);
       },
     });
   };
@@ -59,10 +63,9 @@ function BTCContainer() {
           </Button>
         </Upload>
       </section>
-
       {/* pass initialised data to child */}
       <section className="child-container">
-        <RenderGraph csvData={csvData} />
+        <RenderGraph csvData={csvData} headers={headers} />
       </section>
     </div>
   );
