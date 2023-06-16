@@ -75,4 +75,5 @@ strong {
 .btn:disabled {
   cursor: not-allowed;
   background-color: #f5f5f5;
+  opacity: 0.4;
 }
