@@ -1,0 +1,87 @@
+.parent-container {
+  height: 96vh;
+  padding: 1rem 2rem;
+  display: grid;
+  grid-template-columns: 1fr 0.8fr 1fr;
+  grid-template-rows: 0.05fr 1fr;
+  grid-template-areas:
+    "upload upload upload"
+    "graph graph graph";
+  gap: 1.2rem;
+  background-color: #dae0e3;
+}
+.upload-container {
+  grid-area: upload;
+  border-radius: 4px;
+  padding: 1rem;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
+  /* background: #f5f5f5; */
+  transition: 0.3s ease-in-out;
+}
+.upload-container:hover {
+  box-shadow: rgba(99, 99, 99, 0.4) 0px 2px 8px 0px;
+}
+
+.child-container {
+  grid-area: graph;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
+  transition: 0.3s ease-in-out;
+}
+.child-container:hover {
+  box-shadow: rgba(99, 99, 99, 0.4) 0px 2px 8px 0px;
+}
+.visualization-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  height: 3rem;
+  display: flex;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+  justify-content: center;
+  align-items: center;
+  background-color: #131f1e;
+  color: #fff;
+}
+.actions-container {
+  font-size: 0.82rem;
+  height: 4rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.graph-container {
+  padding: 2rem;
+}
+.upload-btn {
+  width: 20rem;
+}
+strong {
+  margin-right: 10px;
+}
+.btn {
+  width: 6rem;
+  border: 0;
+  height: 2rem;
+  border-radius: 6px;
+  margin-right: 10px;
+  transition: 0.3s ease-in-out;
+}
+.btn:hover {
+  cursor: pointer;
+  background-color: #4096ff;
+}
+.btn:disabled {
+  cursor: not-allowed;
+  background-color: #f5f5f5;
+  opacity: 0.4;
+}
