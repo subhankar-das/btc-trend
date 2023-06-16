@@ -84,7 +84,7 @@ function RenderGraph({ csvData, headers }) {
       // arr[1] => an array of values for a particular month
       const sumOfElements = sumOfArrayValues(arr[1]);
       const avg = sumOfElements === 0 ? 0 : sumOfElements / arr[1].length;
-      monthWiseAvg[arr[0]] = avg;
+      monthWiseAvg[arr[0]] = avg.toFixed(2);
     });
     // console.log({ monthWiseAvg });
     setYaxisData(Object.values(monthWiseAvg));
@@ -130,8 +130,13 @@ function RenderGraph({ csvData, headers }) {
     setColumnValue(val);
   };
   const optionsForGraph = {
-    legend: {
-      data: [selectColumnValue],
+    grid: {
+      left: "3%",
+      right: "3%",
+      bottom: "3%",
+    },
+    tooltip: {
+      trigger: "axis",
     },
     xAxis: {
       type: "category",
@@ -146,6 +151,12 @@ function RenderGraph({ csvData, headers }) {
         type: graphType,
         animation: true,
         draggable: true,
+        showBackground: true,
+        backgroundStyle: {
+          color: "rgba(180, 180, 180, 0.3)",
+        },
+        color: "rgba(64, 150, 255, 0.9)",
+        // color: "rgba(19, 31, 30, 0.8)",
       },
     ],
   };
