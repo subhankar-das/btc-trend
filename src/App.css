@@ -15,6 +15,10 @@
   border-radius: 4px;
   padding: 1rem;
   background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }
 .child-container {
   grid-area: graph;
@@ -41,4 +45,7 @@
 .graph-container {
   grid-area: viz;
   padding: 2rem;
+}
+.upload-btn {
+  width: 20rem;
 }
