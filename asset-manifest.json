@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/btc-trend/static/css/main.1eb1055f.css",
+    "main.js": "/btc-trend/static/js/main.0656ecb7.js",
+    "static/js/787.6e5a2c37.chunk.js": "/btc-trend/static/js/787.6e5a2c37.chunk.js",
+    "index.html": "/btc-trend/index.html",
+    "main.1eb1055f.css.map": "/btc-trend/static/css/main.1eb1055f.css.map",
+    "main.0656ecb7.js.map": "/btc-trend/static/js/main.0656ecb7.js.map",
+    "787.6e5a2c37.chunk.js.map": "/btc-trend/static/js/787.6e5a2c37.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1eb1055f.css",
+    "static/js/main.0656ecb7.js"
+  ]
+}
