@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import ReactECharts from "echarts-for-react";
-import { Select } from "antd";
+import { Divider, Select } from "antd";
 import PropTypes from "prop-types";
 function RenderGraph({ csvData, headers }) {
   const monthNumberToName = {
@@ -17,6 +17,15 @@ function RenderGraph({ csvData, headers }) {
     11: "November",
     12: "December",
   };
+
+  const loadingOption = {
+    text: "Calculating Data ...",
+    color: "#4096ff",
+    textColor: "#242424",
+    maskColor: "rgba(0, 0, 0, 0.4)",
+    zlevel: 0,
+  };
+
   const nonIncludedHeaders = ["Unix Timestamp", "Date", "Symbol"];
   const columnOptions =
     headers.length > 0
@@ -122,20 +131,12 @@ function RenderGraph({ csvData, headers }) {
     if (xAxisData.length > 0 && yAxisData.length > 0) {
       setTimeout(() => {
         setGraphLoading(false);
-      }, 200);
+      }, 500);
     }
   }, [xAxisData, yAxisData]);
 
   const onChangeColumn = (val) => {
     setColumnValue(val);
-  };
-
-  const loadingOption = {
-    text: "Calculating Data ...",
-    color: "#4096ff",
-    textColor: "#242424",
-    maskColor: "rgba(0, 0, 0, 0.4)",
-    zlevel: 0,
   };
 
   const onSelectGraph = (type) => {
@@ -181,17 +182,22 @@ function RenderGraph({ csvData, headers }) {
           </button>
         </div>
       </section>
-
+      <Divider />
       <section className="graph-container">
         {xAxisData.length === 0 || yAxisData.length === 0 ? (
           <></>
         ) : (
           <ReactECharts
             option={{
+              title: {
+                text: `${
+                  graphType === "line" ? "Timestamp" : "Month"
+                }-${selectColumnValue} Relation`,
+              },
               grid: {
-                left: "5%",
-                right: "5%",
-                bottom: "10%",
+                left: "4%",
+                right: "3%",
+                bottom: "5%",
               },
               tooltip: {
                 trigger: "axis",
@@ -199,9 +205,11 @@ function RenderGraph({ csvData, headers }) {
               xAxis: {
                 type: "category",
                 data: xAxisData,
+                // name: `${graphType === "line" ? "Timestamp" : "Month"}`,
               },
               yAxis: {
                 type: "value",
+                // name: `${selectColumnValue}`,
               },
               series: [
                 {
@@ -211,18 +219,18 @@ function RenderGraph({ csvData, headers }) {
                   draggable: true,
                   showBackground: true,
                   backgroundStyle: {
-                    color: "rgba(180, 180, 180, 0.3)",
+                    color: "rgba(180, 180, 180, 0.15)",
                   },
                   color: "rgba(64, 150, 255, 0.9)",
-                  sampling: "lttb",
+                  sampling: "lttb", // Largest triangle three bucket algo to filter points
                 },
               ],
               dataZoom: [
                 {
-                  type: "inside", // Enable zooming
+                  type: "inside", // zooming
                 },
                 {
-                  type: "slider", // Enable panning
+                  type: "slider", // panning
                 },
               ],
             }}
