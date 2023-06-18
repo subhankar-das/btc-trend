@@ -1,13 +1,13 @@
 .parent-container {
-  height: 96vh;
-  padding: 1rem 2rem;
+  height: 98vh;
+  padding: 0.5rem 2rem;
   display: grid;
   grid-template-columns: 1fr 0.8fr 1fr;
-  grid-template-rows: 0.15fr 1fr;
+  grid-template-rows: 0.1fr 1fr;
   grid-template-areas:
     "upload upload upload"
     "graph graph graph";
-  gap: 1.2rem;
+  gap: 0.6rem;
   background-color: #dae0e3;
 }
 .upload-container {
@@ -19,22 +19,30 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
+  box-shadow: rgba(99, 99, 99, 0.4) 0px 2px 8px 0px;
   transition: 0.3s ease-in-out;
 }
 .upload-container:hover {
-  box-shadow: rgba(99, 99, 99, 0.4) 0px 2px 8px 0px;
+  box-shadow: rgba(99, 99, 99, 0.5) 0px 2px 8px 0px;
 }
-
+.ant-upload-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.ant-upload-list {
+  margin-left: 20px;
+  margin-top: -8px;
+}
 .child-container {
   grid-area: graph;
   border-radius: 4px;
   background-color: #fff;
-  box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
+  box-shadow: rgba(99, 99, 99, 0.4) 0px 2px 8px 0px;
   transition: 0.3s ease-in-out;
 }
 .child-container:hover {
-  box-shadow: rgba(99, 99, 99, 0.4) 0px 2px 8px 0px;
+  box-shadow: rgba(99, 99, 99, 0.5) 0px 2px 8px 0px;
 }
 .visualization-container {
   display: flex;
@@ -43,9 +51,9 @@
 
 .header {
   height: 3rem;
-  display: flex;
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
+  display: flex;
   justify-content: center;
   align-items: center;
   background-color: #131f1e;
@@ -59,7 +67,7 @@
   align-items: center;
 }
 .graph-container {
-  padding: 2rem;
+  padding: 0 2rem;
 }
 .upload-btn {
   width: 20rem;
