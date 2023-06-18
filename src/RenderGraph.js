@@ -46,7 +46,9 @@ function RenderGraph({ csvData, headers }) {
 
   // method to calculate X-axis values for Line Chart
   const calculateXAxisForLineChart = (fullCsvData, colName) => {
-    const xValues = fullCsvData.map((obj) => obj[colName]);
+    const xValues = fullCsvData
+      .map((obj) => +obj[colName])
+      .sort((a, b) => a - b);
     return xValues;
   };
 
