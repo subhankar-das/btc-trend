@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import ReactECharts from "echarts-for-react";
 import { Select } from "antd";
 import PropTypes from "prop-types";
@@ -84,7 +84,7 @@ function RenderGraph({ csvData, headers }) {
     return monthWiseAvg;
   };
 
-  const calculatePlotData = () => {
+  const calculatePlotData = (csvData, graphType, selectColumnValue) => {
     // empty existing data points
     setXaxisData([]);
     setYaxisData([]);
@@ -108,12 +108,11 @@ function RenderGraph({ csvData, headers }) {
     }
   };
 
-  useEffect(() => {
+  useMemo(() => {
     if (csvData.length > 0) {
       setGraphLoading(true);
-      calculatePlotData();
+      calculatePlotData(csvData, graphType, selectColumnValue);
     }
-    // eslint-disable-next-line
   }, [csvData, graphType, selectColumnValue]);
 
   useEffect(() => {
@@ -235,7 +234,7 @@ function RenderGraph({ csvData, headers }) {
   );
 }
 
-export default React.memo(RenderGraph);
+export default RenderGraph;
 
 RenderGraph.propTypes = {
   csvData: PropTypes.array.isRequired,
