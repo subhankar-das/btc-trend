@@ -6,7 +6,6 @@ import RenderGraph from "./RenderGraph";
 import "./BTCApp.css";
 
 function BTCContainer() {
-  // const [uploadedFile, setUploadedFile] = useState({});
   const [csvData, setCSVData] = useState([]);
   const [headers, setHeaders] = useState([]);
   const [isParsingCSVFile, setParsingCSVFile] = useState(false);
@@ -17,8 +16,8 @@ function BTCContainer() {
       skipEmptyLines: true,
       header: true, //get array of objects
       complete: (results) => {
-        const parseData = results.data;
         setParsingCSVFile(false);
+        const parseData = results.data;
         const headersArray = Object.keys(parseData[0]);
         setCSVData(parseData);
         setHeaders(headersArray);
@@ -27,7 +26,6 @@ function BTCContainer() {
   };
 
   const onUpload = ({ file, fileList }) => {
-    // setUploadedFile(file);
     // if fileList contains a file, parse it
     // in case file is removed, fileList is empty => donot parse
     if (fileList.length > 0) {
