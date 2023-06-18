@@ -113,6 +113,7 @@ function RenderGraph({ csvData, headers }) {
       setGraphLoading(true);
       calculatePlotData(csvData, graphType, selectColumnValue);
     }
+    //eslint-disable-next-line
   }, [csvData, graphType, selectColumnValue]);
 
   useEffect(() => {
