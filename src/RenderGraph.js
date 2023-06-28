@@ -47,6 +47,35 @@ function RenderGraph({ csvData, headers }) {
   const [graphType, setGraphType] = useState("line");
   const [isGraphLoading, setGraphLoading] = useState(false);
 
+  // method to calculate sum of all elements of an array
+  const sumOfArrayValues = (arr) => arr.reduce((acc, val) => acc + val, 0);
+
+  // method to calculate both X and Y
+  const calculateBothXandYForLineChart = (fullCsvData, colName) => {
+    // for a particular X, get all values of the selected column and find its average
+    const uniqueX = {};
+    // colname is volumne
+    fullCsvData.forEach((obj) => {
+      const x = +obj["Unix Timestamp"];
+      const y = parseFloat(obj[colName]);
+      uniqueX[x] ? (uniqueX[x] = [...uniqueX[x], y]) : (uniqueX[x] = []);
+    }); // {volume: 5.6, open: 8.9}
+    // console.log(uniqueX);
+    // return yValues;
+    Object.entries(uniqueX).forEach((arr) => {
+      // arr[0] => x value i.e timestamp
+      // arr[1] => list of y-values
+      // console.log({ v1: arr[0], v2: arr[1] });
+      const sumOfElements = sumOfArrayValues(arr[1]);
+      const avg =
+        sumOfElements === 0 ? 0 : (sumOfElements / arr[1].length).toFixed(2);
+      uniqueX[arr[0]] = parseFloat(avg);
+    });
+    // console.log(uniqueX);
+    setXaxisData(Object.keys(uniqueX));
+    setYaxisData(Object.values(uniqueX));
+  };
+
   // method to calculate Y-axis values for Line Chart
   const calculateYAxisForLineChart = (fullCsvData, colName) => {
     const yValues = fullCsvData.map((obj) => parseFloat(obj[colName]));
@@ -56,8 +85,8 @@ function RenderGraph({ csvData, headers }) {
   // method to calculate X-axis values for Line Chart
   const calculateXAxisForLineChart = (fullCsvData, colName) => {
     const xValues = fullCsvData
-      .map((obj) => +obj[colName])
-      .sort((a, b) => a - b);
+      .map((obj) => +obj[colName]) // timestamp
+      .sort((a, b) => a - b); // [1450000, 158000 ...]
     return xValues;
   };
 
@@ -68,7 +97,13 @@ function RenderGraph({ csvData, headers }) {
     Object.values(monthNumberToName).forEach((monthName) => {
       monthData[monthName] = [];
     });
+    // {
+    //   'Jan': [val1, val2],
+    //   'Feb': [val1, val2],
+    //   'March': [val1, val2],
+    // }
     fullCsvData.forEach((obj) => {
+      // 4/22/2023 12:10 => ['4', '22' ..]
       const monthNumber = obj[xColName].split("/")[0]; // get month number
       const monthName = monthNumberToName[monthNumber]; // get month name
       const value = parseFloat(obj[yColName]);
@@ -76,9 +111,6 @@ function RenderGraph({ csvData, headers }) {
     });
     return monthData;
   };
-
-  // method to calculate sum of all elements of an array
-  const sumOfArrayValues = (arr) => arr.reduce((acc, val) => acc + val, 0);
 
   // method to calculate Y-axis values for Bar Chart
   const calculateAxesForBarChart = (monthWiseData) => {
@@ -100,6 +132,9 @@ function RenderGraph({ csvData, headers }) {
     setXaxisData([]);
     setYaxisData([]);
     if (graphType === "line") {
+      // on interview-change
+      // calculateBothXandYForLineChart(csvData, selectColumnValue);
+      // old-code to calculate X and Y
       // calculate Y
       const yVals = calculateYAxisForLineChart(csvData, selectColumnValue);
       setYaxisData(yVals);
@@ -205,6 +240,11 @@ function RenderGraph({ csvData, headers }) {
               xAxis: {
                 type: "category",
                 data: xAxisData,
+                axisPointer: {
+                  label: {
+                    formatter: (value) => new Date(+value.value).toDateString(),
+                  },
+                },
                 // name: `${graphType === "line" ? "Timestamp" : "Month"}`,
               },
               yAxis: {
